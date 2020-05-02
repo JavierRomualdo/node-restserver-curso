@@ -2,48 +2,28 @@ require('./config/config');
 
 const express = require('express');
 const app = express();
-
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
-app.get('/usuario', (req, res) => {
+// importante rutas del usuario
+app.use(require('./routes/usuario'));
 
-    res.json("get Usuarios");
-});
-
-app.post('/usuario', (req, res) => {
-
-    const body = req.body;
-
-    if (body.nombre === undefined) {
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona: body
-        });
-    }
-});
-
-app.put('/usuario/:id', (req, res) => {
-    let id = req.params.id;
-    res.json({
-        id
-    });
-});
-
-app.delete('/usuario', (req, res) => {
-
-    res.json('delete Usuario');
-});
+// process.env.URLDB (cadena de conexion creada en la variable de entorno URLDB en config.js)
+mongoose.connect(process.env.URLDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    }).then(con => console.log('conectado !'))
+    .catch(err => console.log('error'));
 
 app.listen(process.env.PORT, () => {
     console.log('Escuchando puerto: ', 3000);
 });
+
+module.exports = app;
