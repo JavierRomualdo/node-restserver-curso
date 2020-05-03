@@ -2,10 +2,17 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const Usuario = require('../models/usuario');
+const { verificaToken, verificarAdmin_Role} = require('../middlewares/autenticacion');
 
 const app = express();
 
-app.get('/usuario', (req, res) => {
+app.get('/usuario', verificaToken, (req, res) => {
+
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // });
 
     // desde =  "0" ( desde la pagina 0 osea 1)
     let desde = req.query.desde || 0;
@@ -42,7 +49,7 @@ app.get('/usuario', (req, res) => {
     // res.json("get Usuarios Local !!");
 });
 
-app.post('/usuario', (req, res) => {
+app.post('/usuario', [verificaToken, verificarAdmin_Role], (req, res) => {
 
     const body = req.body;
 
@@ -83,7 +90,7 @@ app.post('/usuario', (req, res) => {
     // }
 });
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', [verificaToken, verificarAdmin_Role], (req, res) => {
     let id = req.params.id;
     // let body = req.body;
 
@@ -112,7 +119,7 @@ app.put('/usuario/:id', (req, res) => {
 
 });
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuario/:id', [verificaToken, verificarAdmin_Role], (req, res) => {
 
     let id = req.params.id;
 

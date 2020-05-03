@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// importante rutas del usuario
-app.use(require('./routes/usuario'));
+// Configuración global de rutas
+app.use(require('./routes/index'));
 
 // process.env.URLDB (cadena de conexion creada en la variable de entorno URLDB en config.js)
 mongoose.connect(process.env.URLDB, {
