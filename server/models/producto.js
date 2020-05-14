@@ -11,6 +11,10 @@ const productoSchema = new Schema({
         type: Number,
         required: [true, 'El precio unitario es necesario']
     },
+    img: {
+        type: String,
+        required: false,
+    },
     descripcion: {
         type: String,
         required: false,
